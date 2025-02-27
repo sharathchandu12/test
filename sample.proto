@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_package = "com.example";
+option java_outer_classname = "SampleProtos";
+
+message SampleRecord {
+  int32 id = 1;
+  string name = 2;
+  double amount = 3;
+  int64 timestamp = 4;
+  bool is_active = 5;
+  
+  // Nested structure example - useful for complex data
+  message Address {
+    string street = 1;
+    string city = 2;
+    string state = 3;
+    string zip = 4;
+  }
+  
+  // Optional field for nested data
+  optional Address address = 6;
+}
