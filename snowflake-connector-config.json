@@ -7,7 +7,7 @@
     "snowflake.topic2table.map": "topic1:kafka_table1",
     "snowflake.url.name": "mr14846.east-us-2.azure.snowflakecomputing.com",
     "snowflake.user.name": "TEST_USER",
-    "snowflake.private.key": "MIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQC0g3hlFMskMgqv
+    "snowflake.private.key": MIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQC0g3hlFMskMgqv
 zMK5vlnZROzSisTl2vdInptcp5dwt9tG45Xsiaxukvp3OpcDwbj+MAzN72DmyJUo
 fgQ7bZgis+0HQjbAvc9+pJj8LsgyYvBpAKyWjHedF48qXOuSjkXE9cIw1Ah+yxFx
 PR3v9KOQN6l6zc2Dq5LGGAluaCjjxnjCI7SRXUTfAOOjFArM/PPrG7hLQ7G3XviP
@@ -32,7 +32,7 @@ cx3LYbKVzYsM7wq8O+qnU45RQQgPUO5J7G26JNZElh5IBUDD0FMARi69S7Klh5Jl
 BdGHveRmjeNTSRjS3GSUQM3EV3tcgPxF5audKQKBgEGbP0OVT/qtTqazio4rUccM
 FoWbfyhkJG9kqqULhptkn/lFru1bOJ0uVX9N/z2kVc5Yb9Z0bj4cBJOOKiFvhUPi
 DjL5g96anuxtCweX8gg+KWsjogHoHfMDHCUWnph3aItrrTLVuKtVf2o4wnBuKxeg
-QbNEWFJ6SkIVCni2KLb9",
+QbNEWFJ6SkIVCni2KLb9,
     "snowflake.database.name": "KAFKA_TO_SF",
     "snowflake.schema.name": "NEWKAFKA",
     "snowflake.role.name": "KAFKA_TO_SF_POC_ROLE",
