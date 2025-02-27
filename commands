@@ -12,3 +12,12 @@ sudo apt-get install -y \
 pip3 install confluent-kafka protobuf requests
 
 awk 'NF {sub(/\r/, ""); printf "%s\\\\n",$0;}' rsa_key.pem
+
+
+# Create the properly formatted private key for JSON
+FORMATTED_KEY=$(awk 'NF {sub(/\r/, ""); printf "%s\\\\n",$0;}' keys/rsa_key.pem)
+
+sudo apt-get install -y jq
+
+# Use jq to update the JSON config file
+jq --arg key "$FORMATTED_KEY" '.config["snowflake.private.key"] = $key' config/snowflake-connector-config.json > config/snowflake-connector-config.json.new && mv config/snowflake-connector-config.json.new config/snowflake-connector-config.json
