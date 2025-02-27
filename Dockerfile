@@ -1,19 +1,21 @@
-FROM bitnami/kafka:3.4
+FROM confluentinc/cp-kafka-connect-base:7.3.0
 
-ENV KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy Snowflake properties file to Kafka config directory
-COPY SF_connect.properties /opt/bitnami/kafka/config/
+# Install Protobuf Converter using Confluent Hub Client
+RUN confluent-hub install --no-prompt confluentinc/kafka-connect-protobuf-converter:7.3.0
 
-# Add plugin path to connect-standalone.properties
-RUN echo "plugin.path=/opt/bitnami/kafka/libs" >> /opt/bitnami/kafka/config/connect-standalone.properties
+# Install Snowflake Kafka Connector v3.1
+RUN mkdir -p /connectors
+RUN curl -O https://repo1.maven.org/maven2/com/snowflake/snowflake-kafka-connector/3.1.0/snowflake-kafka-connector-3.1.0.jar
+RUN mv snowflake-kafka-connector-3.1.0.jar /connectors/
 
-# Download the Snowflake Kafka Connector
-RUN curl -o /opt/bitnami/kafka/libs/snowflake-kafka-connector-3.1.0.jar \
-    https://repo1.maven.org/maven2/com/snowflake/snowflake-kafka-connector/3.1.0/snowflake-kafka-connector-3.1.0.jar
+# Create directory for connector configuration
+RUN mkdir -p /etc/kafka-connect/jars/
 
-# Copy the startup script
-COPY --chmod=777 start-kafka.sh /opt/bitnami/scripts/start-kafka.sh
-
-# Start Kafka with custom configuration
-CMD ["/opt/bitnami/scripts/start-kafka.sh"]
+# Add log configuration for debugging
+COPY config/connect-log4j.properties /etc/kafka/connect-log4j.properties
