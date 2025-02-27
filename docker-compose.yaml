@@ -1,14 +1,17 @@
-version: '3.8'
-
+version: '3'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
     restart: always
+    volumes:
+      - ./logs/zookeeper:/var/lib/zookeeper/log
+      - zookeeper-data:/var/lib/zookeeper/data
 
   kafka:
     image: confluentinc/cp-kafka:7.3.0
@@ -20,8 +23,67 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
     restart: always
+    volumes:
+      - ./logs/kafka:/var/lib/kafka/data
+      - kafka-data:/var/lib/kafka
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.3.0
+    container_name: schema-registry
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    restart: always
+    volumes:
+      - ./logs/schema-registry:/var/log/schema-registry
+
+  connect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: connect
+    depends_on:
+      - kafka
+      - schema-registry
+    ports:
+      - "8083:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:29092
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: connect-cluster
+      CONNECT_CONFIG_STORAGE_TOPIC: connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: connect-status
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: io.confluent.connect.protobuf.ProtobufConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.protobuf.ProtobufConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+      CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components,/connectors
+      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
+    restart: always
+    volumes:
+      - ./config:/etc/kafka-connect/config
+      - ./logs/connect:/var/log/connect
+
+volumes:
+  zookeeper-data:
+  kafka-data:
