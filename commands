@@ -21,3 +21,6 @@ sudo apt-get install -y jq
 
 # Use jq to update the JSON config file
 jq --arg key "$FORMATTED_KEY" '.config["snowflake.private.key"] = $key' config/snowflake-connector-config.json > config/snowflake-connector-config.json.new && mv config/snowflake-connector-config.json.new config/snowflake-connector-config.json
+
+mkdir -p ./logs/zookeeper/data ./logs/zookeeper/log ./logs/kafka
+chmod -R 777 ./logs
