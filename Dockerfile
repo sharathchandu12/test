@@ -1,10 +1,10 @@
 FROM confluentinc/cp-kafka-connect-base:7.3.0
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
+# Install required packages using Alpine's package manager
+RUN apk update && apk add --no-cache \
     curl \
     unzip \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
 
 # Install Protobuf Converter using Confluent Hub Client
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-protobuf-converter:7.3.0
@@ -16,6 +16,3 @@ RUN mv snowflake-kafka-connector-3.1.0.jar /connectors/
 
 # Create directory for connector configuration
 RUN mkdir -p /etc/kafka-connect/jars/
-
-# Add log configuration for debugging
-COPY config/connect-log4j.properties /etc/kafka/connect-log4j.properties
