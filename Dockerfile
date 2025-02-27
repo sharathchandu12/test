@@ -1,10 +1,15 @@
 FROM confluentinc/cp-kafka-connect-base:7.3.0
 
-# Install required packages using Alpine's package manager
-RUN apk update && apk add --no-cache \
-    curl \
-    unzip \
-    && rm -rf /var/cache/apk/*
+# Try multiple package managers to ensure compatibility
+RUN if command -v apt-get >/dev/null 2>&1; then \
+        apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*; \
+    elif command -v apk >/dev/null 2>&1; then \
+        apk update && apk add --no-cache curl unzip; \
+    elif command -v yum >/dev/null 2>&1; then \
+        yum -y update && yum -y install curl unzip && yum clean all; \
+    else \
+        echo "No supported package manager found"; \
+    fi
 
 # Install Protobuf Converter using Confluent Hub Client
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-protobuf-converter:7.3.0
