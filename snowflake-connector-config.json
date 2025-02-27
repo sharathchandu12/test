@@ -6,7 +6,7 @@
     "topics": "topic1",
     "snowflake.topic2table.map": "topic1:kafka_table1",
     "snowflake.url.name": "mr14846.east-us-2.azure.snowflakecomputing.com",
-    "snowflake.user.name": "<YOUR_SNOWFLAKE_USER>",
+    "snowflake.user.name": "TEST_USER",
     "snowflake.private.key": "<YOUR_FORMATTED_PRIVATE_KEY>",
     "snowflake.database.name": "KAFKA_TO_SF",
     "snowflake.schema.name": "KAFKA_TO_SF_SCHEMA",
@@ -24,4 +24,3 @@
     "errors.log.include.messages": "true"
   }
 }
-cd ..
