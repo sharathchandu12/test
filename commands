@@ -24,3 +24,6 @@ jq --arg key "$FORMATTED_KEY" '.config["snowflake.private.key"] = $key' config/s
 
 mkdir -p ./logs/zookeeper/data ./logs/zookeeper/log ./logs/kafka
 chmod -R 777 ./logs
+
+
+docker exec kafka kafka-topics --delete --topic topic1 --bootstrap-server kafka:29092
