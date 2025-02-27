@@ -10,8 +10,9 @@ services:
       - "2181:2181"
     restart: always
     volumes:
-      - ./logs/zookeeper:/var/lib/zookeeper/log
-      - zookeeper-data:/var/lib/zookeeper/data
+      - ./logs/zookeeper/data:/var/lib/zookeeper/data
+      - ./logs/zookeeper/log:/var/lib/zookeeper/log
+    user: "0:0"
 
   kafka:
     image: confluentinc/cp-kafka:7.3.0
@@ -33,7 +34,7 @@ services:
     restart: always
     volumes:
       - ./logs/kafka:/var/lib/kafka/data
-      - kafka-data:/var/lib/kafka
+    user: "0:0" 
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.3.0
