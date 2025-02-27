@@ -1,5 +1,5 @@
 #!/bin/bash
-KEY=$(awk 'NF {sub(/\r/, ""); printf "%s\\\\n",$0;}' keys/rsa_key.pem)
+KEY=$(awk 'NF {sub(/\r/, ""); printf "%s\\\\n",$0;}' keys/private-key.pem)
 
 cat > config/snowflake-connector-config.json << EOF
 {
