@@ -10,3 +10,5 @@ sudo apt-get install -y \
 
 
 pip3 install confluent-kafka protobuf requests
+
+awk 'NF {sub(/\r/, ""); printf "%s\\\\n",$0;}' rsa_key.pem
