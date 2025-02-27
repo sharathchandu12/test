@@ -9,7 +9,7 @@
     "snowflake.user.name": "TEST_USER",
     "snowflake.private.key": "<YOUR_FORMATTED_PRIVATE_KEY>",
     "snowflake.database.name": "KAFKA_TO_SF",
-    "snowflake.schema.name": "KAFKA_TO_SF_SCHEMA",
+    "snowflake.schema.name": "NEWKAFKA",
     "snowflake.role.name": "KAFKA_TO_SF_POC_ROLE",
     "key.converter": "io.confluent.connect.protobuf.ProtobufConverter",
     "key.converter.schema.registry.url": "http://schema-registry:8081",
