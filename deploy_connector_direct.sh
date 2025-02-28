@@ -31,7 +31,7 @@ snowflake.topic2table.map=topic1:kafka_table1
 # Snowflake connection settings
 snowflake.url.name=mr14846.east-us-2.azure.snowflakecomputing.com
 snowflake.user.name=TEST_USER
-snowflake.private.key= {KEY}
+snowflake.private.key= "${KEY}"
 snowflake.database.name=KAFKA_TO_SF
 snowflake.schema.name=NEWKAFKA
 snowflake.role.name=KAFKA_TO_SF_POC_ROLE
