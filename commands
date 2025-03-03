@@ -29,3 +29,7 @@ chmod -R 777 ./logs
 docker exec kafka kafka-topics --delete --topic topic1 --bootstrap-server kafka:29092
 
 protoc --python_out=. --experimental_allow_proto3_optional proto/sample.proto
+
+curl https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-linux-x86_64.zip >> protoc-3.19.zip
+mkdir protoc-temp
+unzip protoc-3.19.zip -d protoc-temp
