@@ -27,3 +27,5 @@ chmod -R 777 ./logs
 
 
 docker exec kafka kafka-topics --delete --topic topic1 --bootstrap-server kafka:29092
+
+protoc --python_out=. --experimental_allow_proto3_optional proto/sample.proto
