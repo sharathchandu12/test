@@ -37,3 +37,7 @@ unzip protoc-3.19.zip -d protoc-temp
 
 python3 -m venv env
 source env/bin/activate
+
+
+mv /usr/bin/protoc /usr/bin/protoc-old
+cp ./scripts/protoc-temp/bin/protoc /usr/bin/protoc
