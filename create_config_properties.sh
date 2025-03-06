@@ -2,7 +2,7 @@
 set -e
 
 # First, create the standalone properties file if it doesn't exist
-cat > ../config/connect-standalone.properties << EOF
+cat > /home/newadmin/kafka-sfv3/config/connect-standalone.properties << EOF
 bootstrap.servers=kafka:29092
 key.converter=io.confluent.connect.protobuf.ProtobufConverter
 key.converter.schema.registry.url=http://schema-registry:8081
@@ -21,7 +21,7 @@ EOF
 KEY=$(grep -v "KEY\|CERT" keys/private-key.pem | awk 'NF {sub(/\r/, ""); printf "%s",$0;}')
 
 # Then create the Snowflake connector properties file
-cat > ../config/SF_connect.properties << EOF
+cat > /home/newadmin/kafka-sfv3/config/SF_connect.properties << EOF
 name=snowflake-sink-connector
 connector.class=com.snowflake.kafka.connector.SnowflakeSinkConnector
 tasks.max=8
