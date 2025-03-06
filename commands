@@ -44,3 +44,9 @@ cp ./scripts/protoc-temp/bin/protoc /usr/bin/protoc
 
 
 grep -v "KEY\|CERT" <cert>.pem | awk 'NF {sub(/\r/, ""); printf "%s",$0;}'
+
+
+# Alternative deployment using docker exec
+docker exec connect curl -X POST -H "Content-Type: application/json" \
+  --data @/etc/kafka-connect/config/snowflake-connector-config.json \
+  http://localhost:8083/connectors
