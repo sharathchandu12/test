@@ -62,3 +62,8 @@ docker exec -it kafka kafka-run-class kafka.tools.GetOffsetShell \
   --bootstrap-server localhost:9092 \
   --topic topic1 \
   --time -1
+
+
+echo '{"test": "message"}' | docker exec -i kafka kafka-console-producer --bootstrap-server localhost:9092 --topic topic1
+
+docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic topic1 --from-beginning
