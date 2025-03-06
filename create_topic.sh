@@ -7,7 +7,7 @@ docker exec -it kafka kafka-topics --create \
     --bootstrap-server localhost:9092 \
     --partitions 3 \
     --replication-factor 1 \
-    --config cleanup.policy=compact \
+    --config cleanup.policy=delete \
     --config retention.ms=604800000
 
 echo "Topic created successfully."
