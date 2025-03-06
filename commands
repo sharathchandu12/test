@@ -64,6 +64,6 @@ docker exec -it kafka kafka-run-class kafka.tools.GetOffsetShell \
   --time -1
 
 
-echo '{"test": "message"}' | docker exec -i kafka kafka-console-producer --bootstrap-server localhost:9092 --topic topic1
+echo '{"key": "1", "value": {"test": "message"}}' | sudo docker exec -i kafka kafka-console-producer --bootstrap-server localhost:9092 --topic topic1 --property "parse.key=true" --property "key.separator=:"
 
 docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic topic1 --from-beginning
