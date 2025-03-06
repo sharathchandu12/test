@@ -67,3 +67,44 @@ docker exec -it kafka kafka-run-class kafka.tools.GetOffsetShell \
 echo '{"key": "1", "value": {"test": "message"}}' | sudo docker exec -i kafka kafka-console-producer --bootstrap-server localhost:9092 --topic topic1 --property "parse.key=true" --property "key.separator=:"
 
 docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic topic1 --from-beginning
+
+
+cat > sample_message.json << EOF
+{
+  "id": 123,
+  "name": "TEST_RECORD",
+  "amount": 1234.56,
+  "timestamp": 1709758842000,
+  "is_active": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10001"
+  }
+}
+EOF
+
+
+cat sample_message.json | sudo docker exec -i schema-registry kafka-protobuf-console-producer \
+  --bootstrap-server kafka:29092 \
+  --topic topic1 \
+  --property schema.registry.url=http://schema-registry:8081 \
+  --property value.schema='
+    syntax = "proto3";
+    package com.example;
+    message SampleRecord {
+      int32 id = 1;
+      string name = 2;
+      double amount = 3;
+      int64 timestamp = 4;
+      bool is_active = 5;
+      message Address {
+        string street = 1;
+        string city = 2;
+        string state = 3;
+        string zip = 4;
+      }
+      Address address = 6;
+    }
+  '
