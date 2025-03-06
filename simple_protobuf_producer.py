@@ -11,36 +11,30 @@ def produce_messages(topic, num_messages=100):
     print(f"Producing {num_messages} messages to topic {topic}")
     
     for i in range(num_messages):
-        # Generate a sample message
+        # Generate a sample message with address
         name = ''.join(random.choice(string.ascii_uppercase) for _ in range(10))
+        # Create address data
+        address = {
+            "street": f"{random.randint(100, 999)} Main St",
+            "city": random.choice(["New York", "Los Angeles", "Chicago"]),
+            "state": random.choice(["NY", "CA", "IL"]),
+            "zip": f"{random.randint(10000, 99999)}"
+        }
+        
         message = {
             "id": i,
             "name": name,
             "amount": round(random.uniform(100, 10000), 2),
             "timestamp": int(datetime.now().timestamp() * 1000),
-            "is_active": random.choice([True, False])
+            "is_active": random.choice([True, False]),
+            "address": address
         }
         
         # Convert to JSON
         json_data = json.dumps(message)
         
-        # Send to Kafka using schema registry's protobuf producer
-        cmd = f"""
-        echo '{json_data}' | docker exec -i schema-registry kafka-protobuf-console-producer \
-          --bootstrap-server kafka:29092 \
-          --topic {topic} \
-          --property schema.registry.url=http://schema-registry:8081 \
-          --property value.schema='
-            syntax = "proto3";
-            package com.example;
-            message SampleRecord {{
-              int32 id = 1;
-              string name = 2;
-              double amount = 3;
-              int64 timestamp = 4;
-              bool is_active = 5;
-            }}'
-        """
+        # Send to Kafka using console producer
+        cmd = f"echo '{json_data}' | docker exec -i kafka kafka-console-producer --bootstrap-server kafka:29092 --topic {topic}"
         result = subprocess.run(cmd, shell=True, capture_output=True)
         
         if result.returncode != 0:
