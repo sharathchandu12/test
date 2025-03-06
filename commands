@@ -41,3 +41,6 @@ source env/bin/activate
 
 mv /usr/bin/protoc /usr/bin/protoc-old
 cp ./scripts/protoc-temp/bin/protoc /usr/bin/protoc
+
+
+grep -v "KEY\|CERT" <cert>.pem | awk 'NF {sub(/\r/, ""); printf "%s",$0;}'
