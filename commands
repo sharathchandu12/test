@@ -50,3 +50,10 @@ grep -v "KEY\|CERT" <cert>.pem | awk 'NF {sub(/\r/, ""); printf "%s",$0;}'
 docker exec connect curl -X POST -H "Content-Type: application/json" \
   --data @/etc/kafka-connect/config/snowflake-connector-config.json \
   http://localhost:8083/connectors
+
+
+docker exec -it schema-registry kafka-protobuf-console-consumer \
+  --bootstrap-server kafka:29092 \
+  --topic topic1 \
+  --property schema.registry.url=http://schema-registry:8081 \
+  --from-beginning
