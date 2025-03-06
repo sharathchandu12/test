@@ -7,11 +7,11 @@ import subprocess
 from datetime import datetime
 
 def produce_messages(topic, num_messages=100):
-    """Produce messages to Kafka using kafka-console-producer in the container"""
-    print(f"Producing {num_messages} messages to topic {topic}")
+    """Produce messages to Kafka using kafka-protobuf-console-producer in the container"""
+    print(f"Producing {num_messages} Protobuf messages to topic {topic}")
     
     for i in range(num_messages):
-        # Generate a sample message with address
+        # Generate a sample message
         name = ''.join(random.choice(string.ascii_uppercase) for _ in range(10))
         # Create address data
         address = {
@@ -33,16 +33,40 @@ def produce_messages(topic, num_messages=100):
         # Convert to JSON
         json_data = json.dumps(message)
         
-        # Send to Kafka using console producer
-        cmd = f"echo '{json_data}' | docker exec -i kafka kafka-console-producer --bootstrap-server kafka:29092 --topic {topic}"
+        # Send to Kafka using schema registry's protobuf producer
+        cmd = f"""
+        echo '{json_data}' | docker exec -i schema-registry kafka-protobuf-console-producer \
+          --bootstrap-server kafka:29092 \
+          --topic {topic} \
+          --property schema.registry.url=http://schema-registry:8081 \
+          --property value.schema='
+            syntax = "proto3";
+            package com.example;
+            message SampleRecord {{
+              int32 id = 1;
+              string name = 2;
+              double amount = 3;
+              int64 timestamp = 4;
+              bool is_active = 5;
+              message Address {{
+                string street = 1;
+                string city = 2;
+                string state = 3;
+                string zip = 4;
+              }}
+              Address address = 6;
+            }}'
+        """
+        
         result = subprocess.run(cmd, shell=True, capture_output=True)
         
         if result.returncode != 0:
             print(f"Error: {result.stderr.decode()}")
-        
-        # Print progress occasionally
-        if i % 10 == 0:
-            print(f"Produced {i} messages")
+            print(f"Command output: {result.stdout.decode()}")
+        else:
+            # Print progress occasionally
+            if i % 10 == 0:
+                print(f"Produced {i} messages")
         
         # Short delay between messages
         time.sleep(0.1)
