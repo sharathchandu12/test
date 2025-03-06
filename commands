@@ -72,3 +72,10 @@ docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 -
 echo '{"key": {"id": "test-key"}, "value": {"id": 123, "name": "TEST_RECORD", "amount": 1234.56, "timestamp": 1709758842000, "is_active": true, "address": {"street": "123 Main St", "city": "New York", "state": "NY", "zip": "10001"}}}' > sample_message_with_key.json
 
 cat sample_message_with_key.json | sudo docker exec -i schema-registry bash -c 'cat > /tmp/message.json && kafka-protobuf-console-producer --bootstrap-server kafka:29092 --topic topic1 --property schema.registry.url=http://schema-registry:8081 --property parse.key=true --property key.separator=: --property key.schema="syntax = \"proto3\"; package com.example; message Key { string id = 1; }" --property value.schema="syntax = \"proto3\"; package com.example; message SampleRecord { int32 id = 1; string name = 2; double amount = 3; int64 timestamp = 4; bool is_active = 5; message Address { string street = 1; string city = 2; string state = 3; string zip = 4; } Address address = 6; }" < /tmp/message.json'
+
+
+# Delete the existing topic
+sudo docker exec -it kafka kafka-topics --delete --topic topic1 --bootstrap-server localhost:9092
+
+# Create a new topic with delete policy instead of compact
+sudo docker exec -it kafka kafka-topics --create --topic topic1 --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1 --config cleanup.policy=delete
