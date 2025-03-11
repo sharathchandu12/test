@@ -1,0 +1,75 @@
+{
+  "ApplicationId": "memberselectionapi",
+  "CreatedDateTime": "2024-09-09T17:55:31.8116396Z",
+  "EventId": "344a56a8-c70f-4635-a685-3da75db6c455",
+  "LimitedMembers": [
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540943,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540932,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540935,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540942,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540936,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540939,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540938,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540941,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    },
+    {
+      "ApScore": 0.4366,
+      "MemberPlanId": 356540933,
+      "ProviderId": 135504,
+      "TimeSlotsAvailable": 1,
+      "WorkDate": "2024-09-19T00:00:00"
+    }
+  ],
+  "MetaData": {
+    "NpiaAlgorithms": [
+      "MemberLimiting"
+    ]
+  }
+}
