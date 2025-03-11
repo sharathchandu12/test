@@ -79,3 +79,6 @@ sudo docker exec -it kafka kafka-topics --delete --topic topic1 --bootstrap-serv
 
 # Create a new topic with delete policy instead of compact
 sudo docker exec -it kafka kafka-topics --create --topic topic1 --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1 --config cleanup.policy=delete
+
+
+sudo docker exec -it schema-registry curl -X DELETE http://localhost:8081/subjects/topic1
